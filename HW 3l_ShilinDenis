@@ -1,0 +1,117 @@
+import UIKit
+//import Foundation
+
+/*1. Описать несколько структур – любой легковой автомобиль SportCar и любой грузовик TrunkCar.
+2. Структуры должны содержать марку авто, год выпуска, объем багажника/кузова, запущен ли двигатель, открыты ли окна, заполненный объем багажника.
+3. Описать перечисление с возможными действиями с автомобилем: запустить/заглушить двигатель, открыть/закрыть окна, погрузить/выгрузить из кузова/багажника груз определенного объема.
+4. Добавить в структуры метод с одним аргументом типа перечисления, который будет менять свойства структуры в зависимости от действия.
+5. Инициализировать несколько экземпляров структур. Применить к ним различные действия.
+6. Вывести значения свойств экземпляров в консоль*/
+
+enum engineStatus: String {
+    case on = "Заведен"
+    case off = "Заглушен"
+    case ok = "Ничего не делаем"
+}
+
+enum engineAction {
+    case start
+    case stop
+    case noAction
+}
+
+enum windows: String {
+    case open = "Открыты"
+    case close = "Закрыты"
+}
+
+enum trunkState {
+    case emptyTrunk(empty: String)
+    case partiallyTrunk(litersOrCubMet: Double)
+    case fullTrunk(full: String)
+}
+
+struct sportCar {
+    var brand: String
+    var year: Int
+    var trunkVol: trunkState
+    var actEngine: engineAction
+    var engine: engineStatus
+    var window: windows
+    var fullTrunk: Double
+    
+    mutating func whatEngineSport(action: engineStatus) {
+        switch action {
+        case .on:
+            print(action.rawValue)
+            self.engine = .on
+        case .off:
+            print(action.rawValue)
+            self.engine = .off
+        case.ok:
+            print(action.rawValue)
+            self.engine = .ok
+        }
+    }
+    mutating func actEngineSport(action: engineAction){
+        switch action {
+        case .start:
+            self.engine = .on
+        case .stop:
+            self.engine = .off
+        case .noAction:
+            self.engine = .ok
+        }
+        
+    }
+    
+    func description() {
+        print("Название автомобиля: \(brand) \nГод выпуска: \(year) \nСвободное место в багажнике в лирах: \(trunkVol) \nДействия с двигателем \(actEngine) \nСтатус двигателя: \(engine.rawValue) \nОкна: \(window) \nОбъем багажника в литрах: \(fullTrunk)")
+    }
+}
+
+struct TrunkCar {
+    var brand: String
+    var year: Int
+    var trunkVol: trunkState
+    var actEngine: engineAction
+    var engine: engineStatus
+    var window: windows
+    var fullTrunk: Double
+    
+    mutating func whatEngineTrunk(action: engineStatus) {
+        switch action {
+        case .on:
+            print(action.rawValue)
+            self.engine = .on
+        case .off:
+            print(action.rawValue)
+            self.engine = .off
+        case.ok:
+            print(action.rawValue)
+            self.engine = .ok
+        }
+    }
+    mutating func actEngineTrunk(action: engineAction){
+        switch action {
+        case .start:
+            self.engine = .on
+        case .stop:
+            self.engine = .off
+        case .noAction:
+            self.engine = .ok
+        }
+        
+    }
+    
+    func description() {
+        print("Название автомобиля: \(brand) \nГод выпуска: \(year) \nСвободное место в багажнике: \(trunkVol) \nДействия с двигателем \(actEngine) \nСтатус двигателя: \(engine.rawValue) \nОкна: \(window) \nОбъем кузова в куб.м.: \(fullTrunk)")
+    }
+}
+
+var carSropt = sportCar(brand: "Lotus Elise", year: 2013, trunkVol: .emptyTrunk(empty: "Пустой"), actEngine: .noAction, engine: .on, window: .open, fullTrunk: 210)
+var carTrunk = TrunkCar(brand: "Volvo FMX", year: 2020, trunkVol: .partiallyTrunk(litersOrCubMet: 15), actEngine: .start, engine: .off, window: .close, fullTrunk: 20)
+
+carSropt.description()
+
+carTrunk.description()
