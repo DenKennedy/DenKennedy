@@ -1,0 +1,197 @@
+import UIKit
+/*1. Создать протокол «Car» и описать свойства, общие для автомобилей, а также метод действия.
+ 2. Создать расширения для протокола «Car» и реализовать в них методы конкретных действий с автомобилем: открыть/закрыть окно, запустить/заглушить двигатель и т.д. (по одному методу на действие, реализовывать следует только те действия, реализация которых общая для всех автомобилей).
+ 3. Создать два класса, имплементирующих протокол «Car» - trunkCar и sportСar. Описать в них свойства, отличающиеся для спортивного автомобиля и цистерны.
+ 4. Для каждого класса написать расширение, имплементирующее протокол CustomStringConvertible.
+ 5. Создать несколько объектов каждого класса. Применить к ним различные действия.
+ 6. Вывести сами объекты в консоль.*/
+
+protocol car {
+    var brand: String {get}
+    var year: Int {get}
+    var actionEngine: engine {get set}
+    var actionWindow: windows {get set}
+    var actionGas: gasTank {get set}
+}
+
+enum windows {
+    case open
+    case close
+}
+
+enum engine {
+    case run
+    case stop
+}
+
+enum gasTank {
+    case full
+    case empty
+}
+
+extension car {
+    mutating func actionWindow (action: windows) {
+        switch action {
+        case .open:
+            print("Окна открыты")
+            self.actionWindow = .open
+        case .close:
+            print("Окна закрыты")
+            self .actionWindow = .close
+        }
+    }
+    mutating func actionEngine(action: engine) {
+        switch action {
+        case .run:
+            print("Двигатель заведен")
+            self .actionEngine = .run
+        case .stop:
+            print("Двигатель заглушен")
+        }
+    }
+    mutating func actionGas(action: gasTank) {
+        switch action {
+        case .full:
+            print("Бак полный")
+            self .actionGas = .full
+        case .empty:
+            print("Бак пустой")
+            self .actionGas = .empty
+        }
+    }
+}
+
+enum freeSpace {
+    case fullCargo
+    case imptyCargo
+}
+
+class CargoTankCar: car {
+    var brand: String 
+    var year: Int
+    var actionEngine: engine
+    var actionWindow: windows
+    var actionGas: gasTank
+    var cargoTankVol: Int
+    var cargoTankFreeSpace: freeSpace
+    
+    init(brand: String, year: Int, cargoTankVol: Int) {
+        self.brand = brand
+        self.year = year
+        self.actionEngine = .run
+        self.actionWindow = .close
+        self.actionGas = .full
+        self.cargoTankVol = cargoTankVol
+        self.cargoTankFreeSpace = .fullCargo
+    }
+    
+    func cargoTankFreeSpace(action: freeSpace) {
+            switch action {
+            case .fullCargo:
+                print("Цистерна полная")
+                self.cargoTankFreeSpace = .fullCargo
+            case .imptyCargo:
+                print("Цистерна пустая")
+                self.cargoTankFreeSpace = .imptyCargo
+            }
+        }
+    }
+
+enum suspension: String {
+    case sportMode = "Спортивный режим"
+    case comfortMode = "Комфортный режим"
+}
+
+enum bodyKit: String {
+    case aggressive = "Агресивный"
+    case moderate = "Умеренный"
+    case calm = "Спокойный"
+}
+
+class sportCar: car {
+    var brand: String 
+    var year: Int
+    var actionEngine: engine
+    var actionWindow: windows
+    var actionGas: gasTank
+    var suspensionMode: suspension
+    var bodyKitMode: bodyKit
+    
+    init(brand: String, year: Int) {
+        self.brand = brand
+        self.year = year
+        self.actionEngine = .run
+        self.actionWindow = .close
+        self.actionGas = .full
+        self.suspensionMode = .sportMode
+        self.bodyKitMode = .aggressive
+    }
+    
+    func suspensionMode(action: suspension) {
+        switch action {
+        case .sportMode:
+            print("Спортивный режим")
+            self.suspensionMode = .sportMode
+        case .comfortMode:
+            print("Комфортный режим")
+            self.suspensionMode = .comfortMode
+        }
+    }
+    
+    func bodyKitMode(action: bodyKit) {
+        switch action {
+        case .aggressive:
+            print("агресивный режим")
+            self.bodyKitMode = .aggressive
+        case .moderate:
+            print("Умеренный режим")
+            self.bodyKitMode = .moderate
+        case .calm:
+            print("Спокойный Режим")
+            self.bodyKitMode = .calm
+        }
+    }
+}
+
+extension CargoTankCar: CustomStringConvertible {
+    var description: String {
+        return "Марка и модель автомобиля: \(brand) \n" +
+        "Год выпуска ТС: \(year) \n" +
+            "Oбъем цистерны: \(cargoTankVol) куб.м."
+    }
+}
+
+extension sportCar: CustomStringConvertible {
+    var description: String {
+        return "Марка и модель автомобиля: \(brand) \n" +
+            "Год выпуска ТС: \(year) \n"
+    }
+}
+
+var soprtCarMc = sportCar (brand: "McLaren 600LT", year: 2019)
+print(soprtCarMc)
+print("Статус двигателя:") 
+soprtCarMc.actionEngine(action: .stop)
+print("Статус окон:")
+soprtCarMc.actionWindow(action: .open)
+print("Наличие топлива:")
+soprtCarMc.actionGas(action: .empty)
+print("Режим подвески:")
+soprtCarMc.suspensionMode(action: .sportMode)
+print("Угол атаки аэродинамического обвеса")
+soprtCarMc.bodyKitMode(action: .moderate)
+print(soprtCarMc)
+
+
+var trukCar = CargoTankCar (brand: "Volvo FH13 480", year: 2020, cargoTankVol: 2000)
+print(trukCar)
+print("Статус двигателя:") 
+trukCar.actionEngine(action: .run)
+print("Статус окон:")
+trukCar.actionWindow(action: .close)
+print("Наличие топлива:")
+trukCar.actionGas(action: .full)
+print("Наличие груза:")
+trukCar.cargoTankFreeSpace(action: .imptyCargo)
+
+
