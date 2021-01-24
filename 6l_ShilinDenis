@@ -1,0 +1,41 @@
+import UIKit
+/*
+ 1. Реализовать свой тип коллекции «очередь» (queue) c использованием дженериков.
+ 2. Добавить ему несколько методов высшего порядка, полезных для этой коллекции (пример: filter для массивов)
+ 3. * Добавить свой subscript, который будет возвращать nil в случае обращения к несуществующему индексу. */
+
+struct queue<T: Comparable> {
+    var collectCar: [T] = []
+    
+    mutating func addCar(_ newCar: T) {
+        collectCar.append(newCar)
+    }
+    
+    func filter(newCar: T) {
+        print("Выбрать машину \(collectCar.filter{$0 == newCar})")
+    }
+    
+    mutating func sortBy() -> [T]{
+        return collectCar.sorted(by: <)
+    }
+    
+    subscript (index: Int) -> String? {
+        return (index < collectCar.count ? collectCar[index] : nil) as? String
+    }
+        
+    func printMyQueue() {
+        print("Машины на стоянке: \(collectCar)")
+    }
+}
+
+var add = queue<String>(collectCar:["Toyota"])
+add.addCar("Volkswagen")
+add.addCar("BMW")
+add.addCar("Nissan")
+add.addCar("Mercedes")
+add.addCar("Acura")
+
+add.printMyQueue()
+print("Машины с сортировкой \(add.sortBy())")
+
+print((add.filter(newCar: "Volkswagen")))
